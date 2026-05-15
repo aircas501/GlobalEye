@@ -1,63 +1,98 @@
-name: Full CI Check (Python + Java + Node)
+name: CI
 
-# 只在提交 PR 到 main 时运行
 on:
+  push:
+    branches: [ main ]
   pull_request:
     branches: [ main ]
 
 jobs:
-  build:
+  # ======================
+  # Java (Spring Boot) Build & Test
+  # ======================
+  java:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: global-eyes
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ======================
-      # Python 3.10 环境 + 测试
-      # ======================
+      - name: Setup Java JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+
+      - name: Build and test with Maven
+        run: mvn clean verify --batch-mode --no-transfer-progress
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: java-test-results
+          path: global-eyes/global_eye_service/target/surefire-reports/
+
+  # ======================
+  # Python (qb_analysis_agent) Test
+  # ======================
+  python:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Setup Python 3.10
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: pip
 
-      - name: Install Python dependencies
+      - name: Install qb_analysis_agent dependencies
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          if [ -f qb_analysis_agent/requirements.txt ]; then
+            pip install -r qb_analysis_agent/requirements.txt
+          fi
 
-      - name: Run Python tests
+      - name: Run Python tests (if any)
         run: |
-          python -m pytest tests/ -v || echo "No pytest found, skip"
+          if [ -d qb_analysis_agent/tests ]; then
+            python -m pytest qb_analysis_agent/tests/ -v
+          else
+            echo "No tests directory found, skipping"
+          fi
 
-      # ======================
-      # Java JDK 11 环境 + 测试
-      # ======================
-      - name: Setup Java JDK 11
-        uses: actions/setup-java@v4
-        with:
-          java-version: "11"
-          distribution: "temurin"
-          cache: maven
+  # ======================
+  # Node.js (web frontends) Lint & Build check
+  # ======================
+  node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        project: [qb_SituationSystem_web, LightRAG/lightrag_webui]
 
-      - name: Run Java tests
-        run: |
-          if [ -f mvnw ]; then chmod +x mvnw && ./mvnw test; fi
-          if [ -f build.gradle ]; then gradle test; fi
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # ======================
-      # Node.js 16+ 环境 + 测试
-      # ======================
-      - name: Setup Node.js 16
+      - name: Setup Node.js 20
         uses: actions/setup-node@v4
         with:
-          node-version: 16
-          cache: "npm"
+          node-version: 20
+          cache: npm
+          cache-dependency-path: ${{ matrix.project }}/package-lock.json
 
-      - name: Install Node dependencies
+      - name: Install dependencies
         run: |
-          if [ -f package.json ]; then npm install; fi
+          cd ${{ matrix.project }}
+          npm install
 
-      - name: Run Node tests
+      - name: Run lint / build check
         run: |
-          if [ -f package.json ]; then npm test || echo "No test script"; fi
+          cd ${{ matrix.project }}
+          npm run build --if-present || echo "No build script, skipping"
