@@ -1,0 +1,297 @@
+/**
+ * 态势画布（2D/3D）共用浮层样式：实时/历史切换、国家检索、详情卡、历史控制条。
+ * 尺寸优先使用 vw/vh/%，便于不同分辨率下比例一致；由 Situation/index.vue 引入一次，避免重复打包。
+ */
+
+.situation-mode-switch {
+  position: absolute;
+  left: var(--situation-mode-switch-left, 6vw);
+  top: 1.4vh;
+  z-index: 2;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: clamp(0.4rem, 0.75vw, 12px);
+  padding: 0;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  color: #d7ecff;
+  font-size: clamp(0.8rem, 1.05vw, 0.95rem);
+  text-shadow: 0 0.06vh 0.15vh rgba(0, 0, 0, 0.65);
+}
+
+.mode-option {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.25rem, 0.4vw, 6px);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.mode-option input[type="radio"] {
+  margin: 0;
+  width: clamp(12px, 0.9vw, 14px);
+  height: clamp(12px, 0.9vw, 14px);
+  accent-color: #29b6ff;
+}
+
+:root {
+  --situation-overlay-panel-width: min(92vw, clamp(12rem, 18vw, 16rem));
+}
+
+.country-panel {
+  position: absolute;
+  right: 0.35vw;
+  top: 0.6vh;
+  width: var(--situation-overlay-panel-width);
+  max-width: 100%;
+  z-index: 2;
+  padding: clamp(0.5rem, 1vh, 10px) clamp(0.5rem, 0.75vw, 12px);
+  background: rgba(3, 22, 44, 0.62);
+  border: 1px solid rgba(31, 136, 215, 0.45);
+  border-radius: clamp(4px, 0.5vw, 8px);
+  backdrop-filter: blur(4px);
+  color: #e8f4ff;
+}
+
+.country-panel-title {
+  font-size: clamp(0.8rem, 1.05vw, 0.9rem);
+  font-weight: 800;
+  margin-bottom: clamp(0.35rem, 0.8vh, 8px);
+  color: #9fe5ff;
+}
+
+.country-selected-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.35rem, 0.5vw, 8px);
+  min-height: clamp(1.5rem, 3.5vh, 28px);
+  margin-bottom: clamp(0.35rem, 0.8vh, 8px);
+  padding: clamp(0.25rem, 0.6vh, 6px) clamp(0.35rem, 0.5vw, 8px);
+  border-radius: clamp(4px, 0.5vw, 6px);
+  background: rgba(6, 42, 85, 0.35);
+  border: 1px solid rgba(31, 136, 215, 0.35);
+}
+
+.country-flag-img {
+  flex-shrink: 0;
+  width: clamp(28px, 2.2vw, 36px);
+  height: auto;
+  max-height: 2.8vh;
+  object-fit: cover;
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.country-flag-placeholder {
+  flex-shrink: 0;
+  width: clamp(28px, 2.2vw, 36px);
+  height: clamp(18px, 2.4vh, 24px);
+  border-radius: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.country-selected-text {
+  font-weight: 700;
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+  color: #e8f4ff;
+  flex: 1;
+  word-break: break-word;
+  line-height: 1.4;
+}
+
+.country-search {
+  width: 100%;
+  height: clamp(1.75rem, 4vh, 32px);
+  border: 1px solid rgba(31, 136, 215, 0.5);
+  border-radius: clamp(4px, 0.5vw, 6px);
+  background: rgba(6, 42, 85, 0.8);
+  color: #d7ecff;
+  padding: 0 clamp(0.35rem, 0.5vw, 8px);
+  outline: none;
+  box-sizing: border-box;
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+}
+
+.country-search::placeholder {
+  color: #6a8fb0;
+}
+
+.country-suggest {
+  list-style: none;
+  margin: clamp(0.35rem, 0.8vh, 8px) 0 0;
+  padding: 0;
+  max-height: min(28vh, 220px);
+  overflow: auto;
+  border: 1px solid rgba(31, 136, 215, 0.35);
+  border-radius: clamp(4px, 0.5vw, 6px);
+  background: rgba(6, 42, 85, 0.82);
+}
+
+.country-suggest li {
+  padding: clamp(0.35rem, 0.8vh, 8px) clamp(0.4rem, 0.65vw, 10px);
+  cursor: pointer;
+  color: #e8f4ff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+  line-height: 1.35;
+}
+
+.country-suggest li:last-child {
+  border-bottom: none;
+}
+
+.country-suggest li:hover {
+  background: rgba(41, 182, 255, 0.15);
+}
+
+.country-zh {
+  font-weight: 700;
+  margin-right: clamp(0.2rem, 0.35vw, 6px);
+}
+
+.country-en {
+  color: #9ec8ea;
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+}
+
+.country-empty {
+  margin: clamp(0.35rem, 0.8vh, 8px) 0 0;
+  color: rgba(232, 244, 255, 0.75);
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+  border: 1px dashed rgba(31, 136, 215, 0.35);
+  padding: clamp(0.35rem, 0.8vh, 8px);
+  border-radius: clamp(4px, 0.5vw, 6px);
+}
+
+.point-detail-card,
+.situation-detail-card {
+  position: absolute;
+  right: clamp(0.4rem, 0.75vw, 12px);
+  left: auto;
+  bottom: clamp(0.4rem, 1.2vh, 12px);
+  width: var(--situation-overlay-panel-width);
+  max-width: calc(100% - 3vw);
+  max-height: min(60vh, 420px);
+  overflow: auto;
+  z-index: 3;
+  background: rgba(3, 22, 44, 0.62);
+  border: 1px solid rgba(31, 136, 215, 0.45);
+  border-radius: clamp(4px, 0.5vw, 8px);
+  backdrop-filter: blur(4px);
+  padding: clamp(0.5rem, 1vh, 12px);
+  color: #e8f4ff;
+}
+
+.card-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: clamp(0.4rem, 1vh, 10px);
+  font-weight: 800;
+  color: #9fe5ff;
+  font-size: clamp(0.8rem, 1vw, 0.9rem);
+}
+
+.close-btn {
+  background: transparent;
+  color: #8bd6ff;
+  border: none;
+  cursor: pointer;
+  font-size: clamp(0.85rem, 1.1vw, 1rem);
+}
+
+.card-row {
+  font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+  color: rgba(232, 244, 255, 0.9);
+  margin-bottom: clamp(0.25rem, 0.6vh, 6px);
+  line-height: 1.5;
+}
+
+.history-control-panel {
+  position: absolute;
+  left: clamp(0.4rem, 0.75vw, 12px);
+  bottom: clamp(0.4rem, 1.2vh, 12px);
+  top: auto;
+  z-index: 2;
+  width: min(92vw, clamp(14rem, 22vw, 20rem));
+  max-width: calc(100% - 3vw);
+  padding: clamp(0.5rem, 1vh, 12px);
+  border-radius: clamp(4px, 0.5vw, 8px);
+  background: rgba(3, 22, 44, 0.62);
+  border: 1px solid rgba(31, 136, 215, 0.45);
+  backdrop-filter: blur(4px);
+  color: #e8f4ff;
+}
+
+.history-field {
+  display: flex;
+  gap: clamp(0.4rem, 0.65vw, 10px);
+  align-items: center;
+  margin-bottom: clamp(0.4rem, 1vh, 10px);
+}
+
+.history-field label {
+  width: clamp(3rem, 12%, 64px);
+  flex-shrink: 0;
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+  color: #9ec8ea;
+  font-weight: 700;
+}
+
+.history-input,
+.history-select {
+  flex: 1;
+  min-width: 0;
+  height: clamp(1.75rem, 4vh, 32px);
+  border-radius: clamp(4px, 0.5vw, 6px);
+  border: 1px solid rgba(31, 136, 215, 0.5);
+  background: rgba(6, 42, 85, 0.82);
+  color: #d7ecff;
+  padding: 0 clamp(0.35rem, 0.5vw, 8px);
+  box-sizing: border-box;
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+}
+
+.history-datetime-input {
+  cursor: pointer;
+}
+
+.history-slider {
+  width: 100%;
+  height: clamp(4px, 0.8vh, 8px);
+  cursor: pointer;
+  accent-color: #29b6ff;
+}
+
+.history-time-text {
+  margin-top: clamp(0.25rem, 0.6vh, 6px);
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+  color: #9ec8ea;
+}
+
+.history-actions {
+  display: flex;
+  gap: clamp(0.4rem, 0.65vw, 10px);
+  margin-top: clamp(0.4rem, 1vh, 10px);
+}
+
+.history-btn {
+  flex: 1;
+  height: clamp(1.85rem, 4.2vh, 34px);
+  border-radius: clamp(4px, 0.5vw, 6px);
+  border: 1px solid rgba(31, 136, 215, 0.55);
+  background: rgba(6, 42, 85, 0.82);
+  color: #d7ecff;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: clamp(0.7rem, 0.9vw, 0.8rem);
+}
+
+.history-btn-primary {
+  background: linear-gradient(135deg, #1083d3, #0e4d9d);
+  border-color: rgba(41, 182, 255, 0.7);
+}

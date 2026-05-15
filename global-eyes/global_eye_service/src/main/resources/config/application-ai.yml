@@ -1,0 +1,5 @@
+# AgentScope Configuration
+agentscope:
+  model:
+    api-key: ${DASHSCOPE_API_KEY:your_dashscope_api_key}
+    model-name: qwen3.5-flash

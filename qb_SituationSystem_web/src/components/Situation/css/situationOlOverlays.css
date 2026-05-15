@@ -1,0 +1,75 @@
+/**
+ * 仅 OpenLayers 2D 画布使用的浮层：图层开关、鼠标经纬度、图例 emoji。
+ */
+
+.layer-control-panel {
+  position: absolute;
+  left: clamp(0.4rem, 0.75vw, 12px);
+  top: clamp(3rem, 6.5vh, 52px);
+  bottom: auto;
+  z-index: 2;
+  min-width: min(40vw, 140px);
+  padding: clamp(0.5rem, 1vh, 10px) clamp(0.5rem, 0.75vw, 12px);
+  background: rgba(3, 22, 44, 0.72);
+  border: 1px solid rgba(31, 136, 215, 0.45);
+  border-radius: clamp(4px, 0.5vw, 8px);
+  backdrop-filter: blur(4px);
+  color: #e8f4ff;
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+}
+
+.layer-control-title {
+  font-weight: 800;
+  margin-bottom: clamp(0.35rem, 0.8vh, 8px);
+  color: #9fe5ff;
+  font-size: clamp(0.75rem, 0.95vw, 0.85rem);
+}
+
+.layer-check {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.35rem, 0.5vw, 8px);
+  margin-bottom: clamp(0.25rem, 0.6vh, 6px);
+  cursor: pointer;
+  user-select: none;
+}
+
+.layer-check:last-child {
+  margin-bottom: 0;
+}
+
+.layer-check input[type="checkbox"] {
+  margin: 0;
+  width: clamp(12px, 0.9vw, 14px);
+  height: clamp(12px, 0.9vw, 14px);
+  accent-color: #29b6ff;
+}
+
+.legend-emoji {
+  width: clamp(12px, 0.9vw, 14px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: clamp(0.75rem, 0.95vw, 0.9rem);
+  line-height: 1;
+  filter: drop-shadow(0 0.06vh 0.15vh rgba(0, 0, 0, 0.55));
+}
+
+.mouse-lonlat-overlay {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(0.4rem, 1.2vh, 12px);
+  transform: translateX(-50%);
+  z-index: 2;
+  pointer-events: none;
+  padding: clamp(0.2rem, 0.4vh, 3px) clamp(0.35rem, 0.5vw, 8px);
+  border-radius: clamp(4px, 0.5vw, 6px);
+  background: rgba(3, 22, 44, 0.55);
+  border: 1px solid rgba(31, 136, 215, 0.25);
+  backdrop-filter: blur(3px);
+  color: rgba(220, 245, 255, 0.95);
+  font-size: clamp(0.65rem, 0.85vw, 0.75rem);
+  line-height: 1.2;
+  white-space: nowrap;
+}

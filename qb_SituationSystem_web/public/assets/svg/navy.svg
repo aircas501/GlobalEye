@@ -1,0 +1,19 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg t="1769076138770" class="icon" viewBox="0 0 1024 1024" version="1.1"
+     xmlns="http://www.w3.org/2000/svg" p-id="10492" xmlns:xlink="http://www.w3.org/1999/xlink"
+     width="200" height="200">
+  <defs>
+    <!-- 舰船：与2D态势轮船名称同色 -->
+    <filter id="vessel-glow" x="-90%" y="-90%" width="280%" height="280%">
+      <feDropShadow dx="0" dy="0" stdDeviation="12"
+                    flood-color="#25C2B5" flood-opacity="0.9"/>
+    </filter>
+  </defs>
+  <g filter="url(#vessel-glow)">
+    <path d="M426.666667 426.666667l42.666666 106.666666H42.666667V426.666667h64l21.333333 42.666666h21.333333L170.666667 298.666667h85.333333l64 93.866666V469.333333H384v-42.666666h42.666667z"
+          fill="#000000" p-id="10493"/>
+    <path d="M0 640v-85.333333h682.666667l85.333333-64h256L768 768H85.333333l-85.333333-128z"
+          fill="#000000" p-id="10494"/>
+  </g>
+</svg>
