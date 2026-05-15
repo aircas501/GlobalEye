@@ -24,6 +24,10 @@ qbtsxt/
 ![Screenshot 4](pic/4.png)
 ![Screenshot 5](pic/5.png)
 ![Screenshot 6](pic/6.png)
+![Screenshot 7](pic/7.png)
+![Screenshot 8](pic/8.png)
+![Screenshot 9](pic/9.png)
+![Screenshot 10](pic/10.png)
 
 ---
 
