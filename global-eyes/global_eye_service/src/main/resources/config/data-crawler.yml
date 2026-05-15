@@ -1,0 +1,167 @@
+spring:
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        username: ${NACOS_USERNAME:your_nacos_username}
+        password: ${NACOS_PASSWORD:your_nacos_password}
+        namespace: public
+        group: global-eyes
+        service: ${spring.application.name}
+        register-enabled: true
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+
+  datasource:
+    url: ${MYSQL_URL:jdbc:mysql://127.0.0.1:3306/your_database?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true}
+    username: ${MYSQL_USERNAME:your_mysql_username}
+    password: ${MYSQL_PASSWORD:your_mysql_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 50
+      minimum-idle: 10
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:127.0.0.1}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:your_redis_password}
+      database: ${REDIS_DATABASE:0}
+      timeout: 5000ms
+      lettuce:
+        pool:
+          max-active: 50
+          max-idle: 20
+          min-idle: 10
+          max-wait: 3000ms
+
+  elasticsearch:
+    uris: ${ES_URIS:http://127.0.0.1:9200}
+    username: ${ES_USERNAME:your_es_username}
+    password: ${ES_PASSWORD:your_es_password}
+    connection-timeout: 5s
+    socket-timeout: 30s
+
+  neo4j:
+    uri: ${NEO4J_URI:bolt://127.0.0.1:7687}
+    authentication:
+      username: ${NEO4J_USERNAME:your_neo4j_username}
+      password: ${NEO4J_PASSWORD:your_neo4j_password}
+  ai:
+    dashscope:
+      api-key: ${AI_DASHSCOPE_API_KEY:your_dashscope_api_key}
+      chat:
+        options:
+          model: qwen-plus
+          temperature: 0.7
+          multi-model: false
+
+space-track:
+  userName: ${SPACE_TRACK_USERNAME:your_space_track_username}
+  passwd: ${SPACE_TRACK_PASSWORD:your_space_track_password}
+
+external:
+  space-track:
+    base-url: https://www.space-track.org
+    enable: true
+  abnormal-move:
+    base-url: ${ABNORMAL_MOVE_BASE_URL:http://127.0.0.1:8081/}
+  websocket-broadcast:
+    base-url: ${WEBSOCKET_BROADCAST_BASE_URL:http://127.0.0.1:8082}
+
+acled:
+  api:
+    username: ${ACLED_USERNAME:your_acled_username}
+    password: ${ACLED_PASSWORD:your_acled_password}
+    access-token: ${ACLED_ACCESS_TOKEN:}
+    use-browser-auth: false
+    headless: true
+
+opensky:
+  api:
+    base-url: https://opensky-network.org/api
+    connect-timeout: 10000
+    read-timeout: 30000
+    max-buffer-size: 16777216
+  auth:
+    token-url: https://auth.opensky-network.org/auth/realms/opensky-network/protocol/openid-connect/token
+    client-id: ${OPENSKY_CLIENT_ID:your_opensky_client_id}
+    client-secret: ${OPENSKY_CLIENT_SECRET:your_opensky_client_secret}
+    token-refresh-margin: 30
+    distributed-mode: false
+  sync:
+    enabled: true
+    interval: 300000
+    retention-days: 30
+    cleanup-cron: "0 0 3 * * ?"
+
+rss:
+  crawler:
+    enabled: true
+    cron: "0 */30 * * * ?"
+    thread-pool-size: 10
+    connection-timeout: 30000
+    read-timeout: 60000
+    max-fail-count: 3
+    user-agent: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+
+translate:
+  type: ai
+  baidu:
+    appid: ${BAIDU_TRANSLATE_APPID:your_baidu_appid}
+    secret: ${BAIDU_TRANSLATE_SECRET:your_baidu_secret}
+    url: https://fanyi-api.baidu.com/api/trans/vip/translate
+  youdao:
+    appid: ${YOUDAO_TRANSLATE_APPID:your_youdao_appid}
+    secret: ${YOUDAO_TRANSLATE_SECRET:your_youdao_secret}
+    url: https://openapi.youdao.com/api
+  ai:
+    enabled: true
+
+rocketmq:
+  name-server: ${ROCKETMQ_NAME_SERVER:127.0.0.1:9876}
+  producer:
+    group: ${ROCKETMQ_PRODUCER_GROUP:news-crawler-producer-group}
+    send-message-timeout: ${ROCKETMQ_SEND_MESSAGE_TIMEOUT:10000}
+
+storage:
+  type: rocketmq
+  local:
+    path: ./news-data
+    file-name-pattern: "{sequence}_{timestamp}_{title}_{index}.txt"
+  elasticsearch:
+    index-name: news_articles
+  rocketmq:
+    topic: news-articles
+    send-timeout-ms: ${ROCKETMQ_SEND_TIMEOUT_MS:10000}
+
+bloomfilter:
+  expected-insertions: 10000000
+  false-probability: 0.0001
+  redis-key: news:bloom:urls
+  content-hash-key: news:bloom:content
+
+aircraft:
+  cache:
+    enabled: true
+    local:
+      max-size: 10000
+      expire-minutes: 60
+    redis:
+      ttl-seconds: 86400

@@ -1,0 +1,66 @@
+# 美伊局势情报分析系统 Docker Compose
+# 运行: docker-compose up -d
+# 停止: docker-compose down
+# 构建并运行: docker-compose up --build -d
+
+services:
+  # SSE服务 (前端和事件流) - 提供Web界面和实时通信
+  sse:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qb-analysis-sse
+    command: >
+      sh -c "echo '启动SSE服务...' &&
+             python front/web_api.py"
+    ports:
+      - "9092:9092"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      # 应用配置
+      - SSE_HOST=0.0.0.0
+      - SSE_PORT=9092
+      # API服务地址（如果需要调用API服务）
+      - API_BASE_URL=http://api:9090
+    env_file:
+      - .env
+    volumes:
+      # 挂载静态文件目录
+      - ./static:/app/static
+      # 挂载日志目录（可选）
+      - ./logs:/app/logs
+#    depends_on:
+#      - api
+    restart: unless-stopped
+    networks:
+      - qb-network
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # 可选: Nginx反向代理（如果需要统一入口）
+  # nginx:
+  #   image: nginx:alpine
+  #   container_name: qb-analysis-nginx
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #     - ./nginx/ssl:/etc/nginx/ssl:ro
+  #     - ./static:/usr/share/nginx/html/static:ro
+  #   depends_on:
+  #     - api
+  #     - sse
+  #   restart: unless-stopped
+  #   networks:
+  #     - qb-network
+
+networks:
+  qb-network:
+    driver: bridge
+    name: qb-analysis-network
+

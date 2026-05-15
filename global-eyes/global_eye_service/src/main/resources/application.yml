@@ -1,0 +1,43 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: global_eye_service
+
+  # Nacos Discovery Configuration
+  cloud:
+    nacos:
+      discovery:
+        server-addr: ${NACOS_SERVER_ADDR:127.0.0.1:8848}
+        username: ${NACOS_USERNAME:your_nacos_username}
+        password: ${NACOS_PASSWORD:your_nacos_password}
+        namespace: public
+        group: global-eyes
+        service: ${spring.application.name}
+        register-enabled: true
+        heart-beat-interval: 5000
+        heart-beat-timeout: 15000
+
+
+  config:
+    import:
+      - classpath:config/application-ai.yml
+      - classpath:config/data-crawler.yml
+
+# Logging (详细配置请参考 logback-spring.xml)
+logging:
+  level:
+    root: INFO
+
+# SpringDoc OpenAPI (Swagger) Configuration
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  show-actuator: false

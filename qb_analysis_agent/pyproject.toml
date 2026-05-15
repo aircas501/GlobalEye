@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "qb-analysis-agent"
+version = "0.1.0"
+description = "US-Iran Situation Intelligence Analysis System - Multi-role strategic simulation platform for international crisis analysis"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "QB Analysis Agent Contributors" },
+]
+
+keywords = [
+    "intelligence-analysis", "multi-agent", "rag", "strategic-simulation",
+    "us-iran", "crisis-analysis", "llm"
+]
+
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Security",
+]
+
+dependencies = [
+    "aiohttp>=3.13",
+    "fastapi>=0.135",
+    "langchain>=1.2",
+    "langchain-community>=0.4",
+    "langchain-core>=1.2",
+    "langchain-milvus>=0.3",
+    "langchain-openai>=1.1",
+    "langchain-text-splitters>=1.1",
+    "langgraph>=1.1",
+    "neo4j>=6.1",
+    "numpy>=2.4",
+    "openai>=2.28",
+    "pydantic>=2.12",
+    "pymilvus>=2.6",
+
+    "python-dotenv>=1.2",
+    "redis>=7.4",
+    "starlette>=1.0",
+    "uvicorn>=0.42",
+    "dashscope>=1.25",
+    "requests>=2.32",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-username/qb-analysis-agent"
+Repository = "https://github.com/your-username/qb-analysis-agent"
+Issues = "https://github.com/your-username/qb-analysis-agent/issues"
+
+[project.optional-dependencies]
+neo4j-graph = ["llama-index>=0.10", "llama-index-graph-stores-neo4j"]
+dev = ["pytest>=7", "pytest-asyncio>=0.23"]
+
+[tool.setuptools.packages.find]
+include = ["api*", "agent*", "rag*", "front*", "dao*"]
